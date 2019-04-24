@@ -52,10 +52,6 @@ RUN curl -s http://getcomposer.org/installer | php && \
 RUN mkdir /composer && chown www-data:www-data /composer
 RUN chown www-data:www-data /composer
 
-# install nodejs
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash && \
-    apt-get install -y nodejs
-
 COPY ./crontab /etc/cron.d
 RUN chmod -R 644 /etc/cron.d
 

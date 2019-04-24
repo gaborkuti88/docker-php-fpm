@@ -54,12 +54,6 @@ RUN curl -s http://getcomposer.org/installer | php && \
 RUN mkdir /composer && chown www-data:www-data /composer
 RUN chown www-data:www-data /composer
 
-# install nodejs
-RUN curl -sSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
-RUN echo "deb http://deb.nodesource.com/node_12.x jessie main" | tee /etc/apt/sources.list.d/nodesource.list
-RUN echo "deb-src http://deb.nodesource.com/node_12.x jessie main" | tee -a /etc/apt/sources.list.d/nodesource.list
-RUN apt-get update -o Acquire::Check-Valid-Until=false  && apt-get install -y nodejs
-
 COPY ./crontab /etc/cron.d
 RUN chmod -R 644 /etc/cron.d
 
