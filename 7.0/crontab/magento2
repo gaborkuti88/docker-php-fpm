@@ -1,0 +1,1 @@
+* * * * * www-data /usr/local/bin/php /var/www/bin/magento cron:run | grep -v "Ran jobs by schedule" >> /var/www/var/log/magento.cron.log
