@@ -10,7 +10,7 @@ RUN apt-get update && apt-get -y upgrade \
         curl \
         g++ \
         apt-utils \
-        cron \
+         \
         git \
         && apt-get install --yes ssmtp
 
@@ -37,8 +37,6 @@ COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 COPY ./opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 COPY ./config.ini /usr/local/etc/php/conf.d
 COPY ./config.pool.conf /usr/local/etc/php-fpm.d/
-COPY ./crontab /etc/cron.d
-RUN chmod -R 644 /etc/cron.d
 
 ARG HOST_UID=1000
 RUN usermod -u ${HOST_UID} www-data && \
@@ -51,12 +49,6 @@ RUN curl -s http://getcomposer.org/installer | php && \
     mv composer.phar /usr/local/bin/composer
 RUN mkdir /composer && chown www-data:www-data /composer
 RUN chown www-data:www-data /composer
-
-COPY ./crontab /etc/cron.d
-RUN chmod -R 644 /etc/cron.d
-
-COPY ./entrypoint.sh /
-ENTRYPOINT /entrypoint.sh
 
 RUN rm -rf /tmp/* /var/lib/apt/lists/* /var/cache/apk/* \
     && apt-get -y autoremove && apt-get -y autoclean
