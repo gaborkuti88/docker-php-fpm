@@ -12,7 +12,7 @@ RUN apt-get update && apt-get -y upgrade \
         apt-utils \
          \
         git \
-        && apt-get install --yes ssmtp
+        && apt-get install --yes msmtp
 
 RUN pecl install mcrypt-1.0.2 \
 		&& docker-php-ext-enable mcrypt \
@@ -31,8 +31,8 @@ RUN pecl install mcrypt-1.0.2 \
     docker-php-ext-enable xdebug
 
 # copy configurations
-RUN cp /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.dist
-COPY ./ssmtp.conf /etc/ssmtp/ssmtp.conf
+#RUN cp /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.dist
+#COPY ./ssmtp.conf /etc/ssmtp/ssmtp.conf
 COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 COPY ./opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 COPY ./config.ini /usr/local/etc/php/conf.d
@@ -50,21 +50,8 @@ RUN curl -s http://getcomposer.org/installer | php && \
 RUN mkdir /composer && chown www-data:www-data /composer
 RUN chown www-data:www-data /composer
 
-# install libsodium
-RUN mkdir /sodiuminstall
-WORKDIR /sodiuminstall
-RUN curl https://download.libsodium.org/libsodium/releases/libsodium-1.0.18.tar.gz --output libsodium.tar.gz
-RUN tar -xzf libsodium.tar.gz 
-WORKDIR /sodiuminstall/libsodium-1.0.18
-RUN ./configure
-RUN make && make install
-RUN pecl install -f libsodium
-RUN echo "extension=libsodium.so" > "/usr/local/etc/php/conf.d/libsodium.ini"
-RUN rm -rf /sodiuminstall
-
 RUN rm -rf /tmp/* /var/lib/apt/lists/* /var/cache/apk/* \
     && apt-get -y autoremove && apt-get -y autoclean
-
 
 WORKDIR /var/www
 
