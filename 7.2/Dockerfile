@@ -50,8 +50,21 @@ RUN curl -s http://getcomposer.org/installer | php && \
 RUN mkdir /composer && chown www-data:www-data /composer
 RUN chown www-data:www-data /composer
 
+# install libsodium
+RUN mkdir /sodiuminstall
+WORKDIR /sodiuminstall
+RUN curl https://download.libsodium.org/libsodium/releases/libsodium-1.0.18.tar.gz --output libsodium.tar.gz
+RUN tar -xzf libsodium.tar.gz 
+WORKDIR /sodiuminstall/libsodium-1.0.18
+RUN ./configure
+RUN make && make install
+RUN pecl install -f libsodium
+RUN echo "extension=libsodium.so" > "/usr/local/etc/php/conf.d/libsodium.ini"
+RUN rm -rf /sodiuminstall
+
 RUN rm -rf /tmp/* /var/lib/apt/lists/* /var/cache/apk/* \
     && apt-get -y autoremove && apt-get -y autoclean
+
 
 WORKDIR /var/www
 
