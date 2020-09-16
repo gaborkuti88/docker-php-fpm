@@ -28,6 +28,7 @@ RUN apt-get install libonig-dev && docker-php-ext-install \
         iconv \
         mbstring \
         simplexml \
+        sockets \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd \
     && pecl install xdebug && \
