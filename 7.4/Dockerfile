@@ -48,7 +48,7 @@ RUN usermod -u ${HOST_UID} www-data && \
 
 
 # install composer
-RUN curl -s http://getcomposer.org/installer | php && \
+RUN curl -s https://getcomposer.org/download/2.1.6/composer.phar --output composer.phar && chmod +x composer.phar && \
     echo "export PATH=${PATH}:/var/www/vendor/bin" >> ~/.bashrc && \
     mv composer.phar /usr/local/bin/composer
 RUN mkdir /composer && chown www-data:www-data /composer
