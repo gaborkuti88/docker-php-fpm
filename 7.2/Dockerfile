@@ -10,7 +10,6 @@ RUN apt-get update && apt-get -y upgrade \
         curl \
         g++ \
         apt-utils \
-         \
         git \
         && apt-get install --yes msmtp
 
@@ -27,7 +26,7 @@ RUN pecl install mcrypt-1.0.2 \
         opcache \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd \
-    && pecl install xdebug && \
+    && pecl install xdebug-2.9.8 && \
     docker-php-ext-enable xdebug
 
 # copy configurations
