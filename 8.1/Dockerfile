@@ -1,4 +1,4 @@
-FROM php:7.4-fpm
+FROM php:8.1-fpm
 RUN apt-get update && apt-get -y upgrade \
     && apt-get install --no-install-recommends -y \
         libpq-dev \
@@ -28,8 +28,9 @@ RUN apt-get install libonig-dev && docker-php-ext-install \
         iconv \
         mbstring \
         simplexml \
-        sockets \
-    && pecl install xdebug-3.1.5 && \
+        sockets
+
+RUN pecl install xdebug && \
     docker-php-ext-enable xdebug
 
 RUN apt install -y --no-install-recommends \
@@ -40,7 +41,6 @@ RUN apt install -y --no-install-recommends \
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install gd
-
 # copy configurations
 #RUN cp /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.dist
 #COPY ./ssmtp.conf /etc/ssmtp/ssmtp.conf
@@ -55,7 +55,7 @@ RUN usermod -u ${HOST_UID} www-data && \
 
 
 # install composer
-RUN curl -s https://getcomposer.org/download/2.1.6/composer.phar --output composer.phar && chmod +x composer.phar && \
+RUN curl -s https://getcomposer.org/download/2.2.18/composer.phar --output composer.phar && chmod +x composer.phar && \
     echo "export PATH=${PATH}:/var/www/vendor/bin" >> ~/.bashrc && \
     mv composer.phar /usr/local/bin/composer
 RUN mkdir /composer && chown www-data:www-data /composer
